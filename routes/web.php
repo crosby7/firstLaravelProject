@@ -4,16 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Job;
 
 Route::get('/', function () {
-    // get all jobs
-    $jobs = Job::all();
-
-    dd($jobs);
-    
     return view('home');
 });
 
 Route::get('/jobs', function () {
-    return view('jobs', ['jobs' => Job::all()]);
+    $jobs = Job::with('employer')->simplePaginate(3);
+
+    return view('jobs', ['jobs' => $jobs]);
 });
 
 Route::get('/jobs/{id}', function ($id) {
